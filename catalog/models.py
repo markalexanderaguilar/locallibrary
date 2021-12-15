@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse
 
-# Create your models here.
+
 class Genre (models.Model):
 
     name = models.CharField(_("Name"), max_length=200, help_text= 'Enter a book genre (e.g. Science Fiction)')
@@ -40,6 +40,12 @@ class Book(models.Model):
     def get_absolute_url(self):
         
         return reverse('book-detail', args=[str(self.id)])
+
+    def display_genre(self):
+        """Create a string for the Genre. This is required to display genre in Admin."""
+        return ', '.join(genre.name for genre in self.genre.all()[:3])
+
+    display_genre.short_description = 'Genre'
 
 
 class BookInstance(models.Model):
